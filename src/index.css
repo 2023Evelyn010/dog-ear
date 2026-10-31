@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* 移除 Tailwind 預設色票：元件只能用下方的 tokens，不能寫死顏色 */
+@theme {
+  --color-*: initial;
+}
+
+@theme {
+  /* 顏色 */
+  --color-bg: #F7FAFF;           /* 頁面底色（冷白） */
+  --color-card: #FFFFFF;         /* 卡片、面板 */
+  --color-photo: #E9EEF6;        /* 照片佔位、縮圖底 */
+  --color-line: #DCE3EE;         /* 框線、分隔線、進度條底 */
+  --color-primary: #2E4A7D;      /* 鋼筆藍：主要按鈕、選取狀態 */
+  --color-primary-soft: #E6ECF6; /* 提示列底色 */
+  --color-ink: #1E1E1E;          /* 主要文字 */
+  --color-sub: #6B7280;          /* 次要文字 */
+  --color-on-primary: #FFFFFF;   /* 主色上的文字 */
+  --color-part5: #3E6FB0;
+  --color-part6: #4E9A7A;
+  --color-part7: #E0A23A;
+  --color-fold: #E0A23A;         /* 折角 */
+  --color-overlay: #1E2A3D;      /* 面板遮罩，使用時 45% 透明度 */
+
+  /* 圓角 */
+  --radius-card: 12px;           /* 卡片右上角例外：0（留給折角） */
+  --radius-button: 10px;
+  --radius-option: 10px;
+  --radius-chip: 9999px;
+
+  /* 字體 */
+  --font-heading: "Chiron GoRound TC", "Noto Sans TC", system-ui, sans-serif;
+  --font-body: "Noto Sans TC", system-ui, sans-serif;
+
+  /* 文字樣式（docs/DESIGN.md 第 2 節）；字體與字重搭配 font-heading / font-body 使用 */
+  --text-display: 40px;          /* Heading/Display */
+  --text-display--line-height: 48px;
+  --text-title: 24px;            /* Heading/Title */
+  --text-title--line-height: 32px;
+  --text-section: 20px;          /* Heading/Section */
+  --text-section--line-height: 28px;
+  --text-card: 18px;             /* Heading/Card */
+  --text-card--line-height: 26px;
+  --text-button: 16px;           /* Body/Button */
+  --text-button--line-height: 24px;
+  --text-label: 14px;            /* Body/Label */
+  --text-label--line-height: 20px;
+  --text-body: 14px;             /* Body/Base */
+  --text-body--line-height: 22px;
+  --text-small: 13px;            /* Body/Small */
+  --text-small--line-height: 20px;
+  --text-caption: 12px;          /* Body/Caption */
+  --text-caption--line-height: 18px;
+
+  /* 版面 */
+  --container-app: 480px;        /* 內容最大寬度 */
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-bg font-body text-body text-ink antialiased;
+    min-height: 100dvh;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
