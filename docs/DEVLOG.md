@@ -17,3 +17,4 @@
 - 預設錯因與設定用 Dexie 的 `populate` 事件建立：只在資料庫第一次建立時執行，重開不會重複。
 - 導覽列只出現在複習、錯題庫兩個分頁；設定依 Figma 5-1 為返回式頁首、沒有導覽列。流程頁的 ✕／‹ 優先返回上一頁，直接開網址時回到預設頁。
 - 卡關：Windows 上 headless Edge 的視窗有最小寬度，`--window-size=390` 不準，改用 390px 寬的 iframe 檢查畫面。
+- 部署：GitHub repo 匯入 Vercel（https://dog-ear-two.vercel.app），之後 push 到 main 就自動部署。iPhone Safari 加入主畫面後以全螢幕開啟、三個分頁可切換、飛航模式下仍可開啟，Day 4 驗收通過。
