@@ -27,3 +27,5 @@
 - 照片元件改成在 effect 裡直接設定 `<img>` 的 src 並在卸載時 revoke，避開「effect 裡 setState」的 lint 警告，也不會在 StrictMode 重跑 effect 時拿到已 revoke 的網址。
 - 輸入框字級一律 16px：iOS Safari 對小於 16px 的輸入框聚焦時會自動放大畫面。
 - 驗證：用 headless Edge + CDP 的 `setDeviceMetricsOverride` 模擬 390px（取代 Day 4 的 iframe 作法），腳本實際上傳 3024×4032 照片、走完三題錄入與練習量面板，42 項檢查全過；照片壓成 1200×1600 JPEG、約 24KB。真實題本與 30 秒的驗收要在手機上做。
+- 部署後手機一開始還是舊版：Service Worker 只在冷啟動時檢查更新，iPhone 從背景切回 App 不算冷啟動；把 App 從多工畫面滑掉再開才換到新版。之後每次部署都會遇到，待決定是否改成「回到前景時檢查更新」。
+- 手機驗收（iPhone，真實題本）：單題錄入約 30 秒，剛好達標、沒有餘裕；「沿用這組照片」連續新增多題正常；關掉重開後資料仍在（錄入頁的錯因順序依使用次數改變）。Day 5 驗收通過。
