@@ -9,7 +9,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // prompt：新版下載後先等待，由 src/lib/pwa.ts 決定何時套用（錄入、複習中不重新整理）
+      registerType: 'prompt',
+      injectRegister: false,
       manifest: {
         name: 'Dog-ear',
         short_name: 'Dog-ear',
