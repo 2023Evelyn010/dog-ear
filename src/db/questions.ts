@@ -15,7 +15,7 @@ export interface NewQuestionInput {
 }
 
 /** 選填文字欄位：去掉前後空白，空字串存成 undefined */
-function optionalText(s: string | undefined): string | undefined {
+export function optionalText(s: string | undefined): string | undefined {
   const t = s?.trim()
   return t ? t : undefined
 }

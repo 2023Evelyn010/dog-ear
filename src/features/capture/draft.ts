@@ -1,4 +1,4 @@
-import type { Choice, Part } from '../../db/schema'
+import type { Choice, Part, Question } from '../../db/schema'
 
 /** 錄入表單的暫存狀態（還沒存檔的一題） */
 export interface Draft {
@@ -38,7 +38,7 @@ export function firstMissing(d: Draft): string | null {
 
 /**
  * 是否有還沒存檔的內容（按 ✕ 時要不要確認）。
- * 與表單重設時的狀態比較：自動帶入的題本來源、沿用的照片與 Part 不算「已填」。
+ * 與表單重設（或載入）時的狀態比較：自動帶入的題本來源、沿用的照片與 Part 不算「已填」。
  */
 export function isDirty(d: Draft, baseline: Draft): boolean {
   return (
@@ -47,11 +47,26 @@ export function isDirty(d: Draft, baseline: Draft): boolean {
     d.part !== baseline.part ||
     d.myAnswer !== baseline.myAnswer ||
     d.correctAnswer !== baseline.correctAnswer ||
-    d.tagIds.length > 0 ||
+    d.tagIds.length !== baseline.tagIds.length ||
+    d.tagIds.some((id) => !baseline.tagIds.includes(id)) ||
     d.source.trim() !== baseline.source.trim() ||
-    d.pageRef.trim() !== '' ||
-    d.note.trim() !== ''
+    d.pageRef.trim() !== baseline.pageRef.trim() ||
+    d.note.trim() !== baseline.note.trim()
   )
+}
+
+/** 編輯錯題：把題目載入表單 */
+export function draftFromQuestion(q: Question): Draft {
+  return {
+    images: q.images,
+    part: q.part,
+    myAnswer: q.myAnswer,
+    correctAnswer: q.correctAnswer,
+    tagIds: q.errorTagIds,
+    source: q.source ?? '',
+    pageRef: q.pageRef ?? '',
+    note: q.note ?? '',
+  }
 }
 
 export function toggleTag(tagIds: string[], id: string): string[] {

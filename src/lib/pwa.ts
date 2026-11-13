@@ -2,13 +2,15 @@
  * App 更新策略（Service Worker）。
  *
  * iPhone 從背景切回 App 不算重新開啟，瀏覽器不會自己檢查新版；所以在回到前景時主動檢查。
- * 新版下載好後先等待，使用者不在錄入、複習流程中才套用並重新整理，避免清掉填到一半的表單。
+ * 新版下載好後先等待，使用者不在錄入、複習、編輯錯題中才套用並重新整理，避免清掉填到一半的表單。
  */
 
 /** 這些畫面有尚未存檔的進度，不能自動重新整理 */
 const BUSY_PATHS = ['/capture', '/review']
+const EDIT_PATH = /^\/library\/[^/]+\/edit\/?$/ // 編輯錯題
 
 export function canReloadAt(pathname: string): boolean {
+  if (EDIT_PATH.test(pathname)) return false
   return !BUSY_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))
 }
 

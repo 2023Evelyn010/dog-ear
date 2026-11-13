@@ -9,12 +9,15 @@ export function Photo({
   alt,
   className = '',
   fit = 'cover',
+  framed = true,
 }: {
   blob?: Blob
   alt: string
   className?: string
   /** contain：要看清整張題目時（複習作答） */
   fit?: 'cover' | 'contain'
+  /** false：不要底色與圓角（全螢幕檢視） */
+  framed?: boolean
 }) {
   const imgRef = useRef<HTMLImageElement>(null)
 
@@ -30,7 +33,7 @@ export function Photo({
   }, [blob])
 
   return (
-    <div className={`overflow-hidden rounded-card bg-photo ${className}`}>
+    <div className={`overflow-hidden ${framed ? 'rounded-card bg-photo' : ''} ${className}`}>
       {blob && <img ref={imgRef} alt={alt} className={`size-full ${fit === 'contain' ? 'object-contain' : 'object-cover'}`} draggable={false} />}
     </div>
   )

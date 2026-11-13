@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Photo } from './Photo'
+import { PhotoViewer } from './PhotoViewer'
 
-/** 題目照片：多張時左右滑動（scroll-snap），下方小圓點標示目前第幾張 */
+/** 題目照片：多張時左右滑動（scroll-snap），下方小圓點標示目前第幾張；點照片開啟全螢幕檢視 */
 export function PhotoPager({ images, className = '' }: { images: Blob[]; className?: string }) {
   const [page, setPage] = useState(0)
+  const [viewing, setViewing] = useState<number | null>(null)
+  const label = (i: number) => (images.length > 1 ? `題目照片 ${i + 1}／${images.length}` : '題目照片')
   return (
     <div className={`relative flex flex-col ${className}`}>
       <div
@@ -14,13 +17,15 @@ export function PhotoPager({ images, className = '' }: { images: Blob[]; classNa
         }}
       >
         {images.map((blob, i) => (
-          <Photo
+          <button
             key={i}
-            blob={blob}
-            alt={images.length > 1 ? `題目照片 ${i + 1}／${images.length}` : '題目照片'}
-            fit="contain"
+            type="button"
+            onClick={() => setViewing(i)}
+            aria-label={`放大${label(i)}`}
             className="h-full w-full shrink-0 snap-center"
-          />
+          >
+            <Photo blob={blob} alt={label(i)} fit="contain" className="size-full" />
+          </button>
         ))}
       </div>
       {images.length > 1 && (
@@ -30,6 +35,7 @@ export function PhotoPager({ images, className = '' }: { images: Blob[]; classNa
           ))}
         </div>
       )}
+      {viewing !== null && <PhotoViewer images={images} start={viewing} onClose={() => setViewing(null)} />}
     </div>
   )
 }

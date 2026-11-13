@@ -29,7 +29,7 @@ export function HomePage() {
 }
 
 /** 1-2 還沒有錯題 */
-function EmptyState() {
+export function EmptyState() {
   const navigate = useNavigate()
   return (
     <div className="flex flex-col items-center px-6 pt-[18dvh] text-center">

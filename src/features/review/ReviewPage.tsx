@@ -7,6 +7,7 @@ import { Card, StatCard } from '../../components/Card'
 import { Chip } from '../../components/Chip'
 import { FlowHeader } from '../../components/Header'
 import { Option, OptionGroup } from '../../components/Option'
+import { PART_TEXT } from '../../components/partColor'
 import { PhotoPager } from '../../components/PhotoPager'
 import { ConfirmSheet, Sheet } from '../../components/Sheet'
 import { useGoBack } from '../../components/useGoBack'
@@ -20,7 +21,6 @@ import { AddTagSheet } from '../capture/AddTagSheet'
 import { upcomingText } from './copy'
 
 const CHOICES: Choice[] = ['A', 'B', 'C', 'D']
-const PART_COLOR = { 5: 'text-part5', 6: 'text-part6', 7: 'text-part7' } as const
 
 /** 今日複習流程（全螢幕）：docs/PRD.md 3.3、Figma 3-1～3-4 */
 export function ReviewPage() {
@@ -120,7 +120,7 @@ function ReviewSession({ queue }: { queue: Question[] }) {
         leading="close"
         title={`${index + 1} / ${queue.length}`}
         onLeading={() => (hasUnanswered ? setSheet('leave') : goBack())}
-        right={<span className={`text-label font-bold ${PART_COLOR[current.part]}`}>Part {current.part}</span>}
+        right={<span className={`text-label font-bold ${PART_TEXT[current.part]}`}>Part {current.part}</span>}
       />
       <div className="px-6">
         <div className="h-1 overflow-hidden rounded-[2px] bg-line">

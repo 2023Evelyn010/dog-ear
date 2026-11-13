@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router'
 import { CapturePage } from '../features/capture/CapturePage'
 import { LibraryPage } from '../features/library/LibraryPage'
+import { EditQuestionPage } from '../features/library/EditQuestionPage'
 import { QuestionDetailPage } from '../features/library/QuestionDetailPage'
 import { WelcomePage } from '../features/onboarding/WelcomePage'
 import { HomePage } from '../features/review/HomePage'
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
       { path: '/review', element: <ReviewPage /> },
       { path: '/capture', element: <CapturePage /> },
       { path: '/library/:id', element: <QuestionDetailPage /> },
+      { path: '/library/:id/edit', element: <EditQuestionPage /> },
       { path: '/settings', element: <SettingsPage /> },
       { path: '/settings/tags', element: <TagsPage /> },
       { path: '/welcome', element: <WelcomePage /> },

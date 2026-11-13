@@ -50,3 +50,15 @@ describe('中途離開確認', () => {
     expect(isDirty({ ...base, note: ' ' }, base)).toBe(false)
   })
 })
+
+describe('編輯錯題', () => {
+  it('載入後沒改動不算已填；改錯因、頁碼、筆記都算', () => {
+    const base = { ...full }
+    expect(isDirty({ ...base }, base)).toBe(false)
+    expect(isDirty({ ...base, tagIds: ['u'] }, base)).toBe(true)
+    expect(isDirty({ ...base, tagIds: [] }, base)).toBe(true)
+    expect(isDirty({ ...base, pageRef: '154' }, base)).toBe(true)
+    expect(isDirty({ ...base, note: '' }, base)).toBe(true)
+    expect(isDirty({ ...base, note: '筆記 ' }, base)).toBe(false)
+  })
+})
