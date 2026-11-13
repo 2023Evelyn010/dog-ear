@@ -1,12 +1,12 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { DateString } from '../lib/date'
+import type { Level, ReviewResult } from '../lib/scheduler'
 
 // 資料結構見 docs/PRD.md 第 5 節
 
 export type Choice = 'A' | 'B' | 'C' | 'D'
 export type Part = 5 | 6 | 7
-export type Level = 0 | 1 | 2 | 3 | 4 | 5
-export type ReviewResult = 'sure' | 'guessed' | 'wrong'
+export type { Level, ReviewResult } // 定義在排程模組
 
 export interface Question {
   id: string // crypto.randomUUID()

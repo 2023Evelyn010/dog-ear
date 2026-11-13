@@ -1,4 +1,5 @@
-import { addDays, today } from '../lib/date'
+import { today } from '../lib/date'
+import { initialSchedule } from '../lib/scheduler'
 import { db as defaultDb, SETTINGS_ID, type Choice, type DogEarDB, type Part, type Question } from './schema'
 
 export interface NewQuestionInput {
@@ -33,9 +34,7 @@ export function buildNewQuestion(input: NewQuestionInput, now: Date = new Date()
     pageRef: optionalText(input.pageRef),
     note: optionalText(input.note),
     sessionId: input.sessionId,
-    level: 0,
-    status: 'learning',
-    nextReviewDate: addDays(today(now), 1),
+    ...initialSchedule(today(now)),
     createdAt: iso,
     updatedAt: iso,
   }
@@ -44,6 +43,18 @@ export function buildNewQuestion(input: NewQuestionInput, now: Date = new Date()
 /** 猜對的題目：我的答案與正確答案相同 */
 export function isGuessed(q: { myAnswer: Choice | 'blank'; correctAnswer: Choice }): boolean {
   return q.myAnswer === q.correctAnswer
+}
+
+/** 更新題目欄位（複習時追加錯因、編輯筆記） */
+export async function updateQuestion(
+  id: string,
+  patch: Partial<Pick<Question, 'errorTagIds' | 'note'>>,
+  database: DogEarDB = defaultDb,
+): Promise<void> {
+  const changes: Partial<Question> = { ...patch, updatedAt: new Date().toISOString() }
+  if ('note' in patch) changes.note = optionalText(patch.note)
+  if (patch.errorTagIds) changes.errorTagIds = [...new Set(patch.errorTagIds)]
+  await database.questions.update(id, changes)
 }
 
 /** 新增錯題，並把題本來源記為下次的預設值 */

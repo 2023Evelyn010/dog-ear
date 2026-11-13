@@ -24,7 +24,7 @@ export function Option({
       onClick={onSelect}
       className={`flex h-[52px] min-w-0 flex-1 items-center justify-center rounded-option border transition-colors ${
         selected ? 'border-primary bg-primary text-on-primary' : 'border-line bg-card text-ink'
-      } ${small ? 'text-small font-bold' : 'font-heading text-card font-bold'}`}
+      } ${small ? 'text-small font-bold' : 'font-heading text-heading-card font-bold'}`}
     >
       {children}
     </button>

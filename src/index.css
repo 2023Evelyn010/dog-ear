@@ -40,8 +40,9 @@
   --text-title--line-height: 32px;
   --text-section: 20px;          /* Heading/Section */
   --text-section--line-height: 28px;
-  --text-card: 18px;             /* Heading/Card */
-  --text-card--line-height: 26px;
+  /* 不能叫 --text-card：text-card 會和顏色 token --color-card（白）撞名，標題變成白字 */
+  --text-heading-card: 18px;     /* Heading/Card */
+  --text-heading-card--line-height: 26px;
   --text-button: 16px;           /* Body/Button */
   --text-button--line-height: 24px;
   --text-label: 14px;            /* Body/Label */

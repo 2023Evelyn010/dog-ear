@@ -59,6 +59,7 @@ export function Sheet({
 export function ConfirmSheet({
   open,
   title,
+  description,
   confirmLabel,
   cancelLabel,
   onConfirm,
@@ -66,6 +67,7 @@ export function ConfirmSheet({
 }: {
   open: boolean
   title: string
+  description?: string
   confirmLabel: string
   cancelLabel: string
   onConfirm: () => void
@@ -73,6 +75,7 @@ export function ConfirmSheet({
 }) {
   return (
     <Sheet open={open} onClose={onCancel} title={title}>
+      {description && <p className="mt-2 text-small text-sub">{description}</p>}
       <div className="mt-6 flex flex-col gap-3">
         <Button onClick={onConfirm}>{confirmLabel}</Button>
         <Button variant="secondary" onClick={onCancel}>
