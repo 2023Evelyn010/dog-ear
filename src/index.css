@@ -27,6 +27,7 @@
   --radius-button: 10px;
   --radius-option: 10px;
   --radius-chip: 9999px;
+  --radius-sheet: 20px;          /* Sheet 上方圓角（DESIGN.md 元件表） */
 
   /* 字體 */
   --font-heading: "Chiron GoRound TC", "Noto Sans TC", system-ui, sans-serif;
