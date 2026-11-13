@@ -102,3 +102,31 @@ describe('複習頁數據', () => {
     expect(await getReviewOverview(db, at(13))).toMatchObject({ tomorrowCount: 0, nextDate: null })
   })
 })
+
+describe('iOS Safari 相容', () => {
+  // iOS Safari 開 cursor 可能丟 UnknownError「Unable to open cursor」，首頁整頁掛掉
+  it('首頁數據不開任何 cursor（空資料與有資料都一樣）', async () => {
+    const methods = ['openCursor', 'openKeyCursor'] as const
+    const protos = [IDBObjectStore.prototype, IDBIndex.prototype]
+    const originals = protos.map((p) => methods.map((m) => p[m]))
+    let opened = 0
+    for (const p of protos)
+      for (const m of methods) {
+        const orig = p[m] as (...args: unknown[]) => IDBRequest
+        ;(p as unknown as Record<string, unknown>)[m] = function (this: unknown, ...args: unknown[]) {
+          opened++
+          return orig.apply(this, args)
+        }
+      }
+    try {
+      const db = freshDb()
+      await getReviewOverview(db, at(10))
+      const q = await addQuestion(input, db, at(10))
+      await recordReview(q.id, 'D', 'sure', db, at(11))
+      await getReviewOverview(db, at(11))
+      expect(opened).toBe(0)
+    } finally {
+      protos.forEach((p, i) => methods.forEach((m, j) => ((p as unknown as Record<string, unknown>)[m] = originals[i][j])))
+    }
+  })
+})

@@ -85,7 +85,9 @@ export async function getReviewOverview(database: DogEarDB = defaultDb, now: Dat
     database.questions.count(),
     database.questions.where('createdAt').aboveOrEqual(startOfLocalDay(weekStart(today)).toISOString()).count(),
     database.questions.where('createdAt').aboveOrEqual(startOfLocalDay(today).toISOString()).count(),
-    database.reviewLogs.orderBy('reviewDate').uniqueKeys(),
+    // iOS Safari 開 cursor 可能丟 UnknownError「Unable to open cursor」（uniqueKeys、first 都會開 cursor），
+    // 首頁只用 getAll／count 類的查詢
+    database.reviewLogs.toArray().then((all) => all.map((l) => l.reviewDate)),
     todayLogs(database, today),
     // 已掌握的題目 nextReviewDate 為 null，不在索引裡
     database.questions.where('nextReviewDate').belowOrEqual(today).count(),
@@ -97,7 +99,7 @@ export async function getReviewOverview(database: DogEarDB = defaultDb, now: Dat
   const tomorrowCount = Math.min(dueByTomorrow, limit)
   let nextDate: DateString | null = null
   if (tomorrowCount === 0) {
-    const first = await database.questions.where('nextReviewDate').above(tomorrow).first()
+    const [first] = await database.questions.where('nextReviewDate').above(tomorrow).limit(1).toArray()
     nextDate = first?.nextReviewDate ?? null
   }
   return {
