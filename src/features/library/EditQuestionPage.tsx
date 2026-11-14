@@ -88,8 +88,7 @@ function EditForm({ question }: { question: Question }) {
         />
       </main>
       <SaveBar error={saveError} hint={processing > 0 ? '' : missing} disabled={!!missing || processing > 0 || busy} onSave={() => void save()} />
-      {/* 編輯時「捨棄這題」容易誤會成刪除，改問是否捨棄修改 */}
-      <DiscardSheet open={discarding} title="要捨棄修改嗎？" onConfirm={goBack} onCancel={() => setDiscarding(false)} />
+      <DiscardSheet open={discarding} onConfirm={goBack} onCancel={() => setDiscarding(false)} />
     </div>
   )
 }
