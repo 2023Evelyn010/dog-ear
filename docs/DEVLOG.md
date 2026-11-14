@@ -41,6 +41,7 @@
 - 驗證：390px 實測完整核心循環 32 項（錄入 → 開發用按鈕設為今天 → 答錯／不會／答對 → 完成 → 中途離開再進來），單元測試 88 個。
 - 卡關：部署後 iPhone 首頁整頁顯示「Unexpected Application Error」，錯誤訊息是 `UnknownError: Unable to open cursor`。首頁數據的 `uniqueKeys()`（連續天數）與 `first()`（下次複習日）都會開 IndexedDB cursor，iOS Safari 在資料表為空時開 cursor 會失敗（剛好還沒有任何複習紀錄）。電腦上的 Chromium 與 WebKit 都重現不出來，是拿到手機上的錯誤訊息才定位。改成只用 getAll／count 類查詢（讀全部 ReviewLog 取日期、`limit(1).toArray()`），並加測試確保首頁數據不開任何 cursor。修正後手機首頁正常，新增題目正常、數字正確。
 - 待驗證：錄入頁的錯因排序仍用多值索引的 `keys()`（會開 cursor），目前手機上正常；若之後出現同樣錯誤，改用同樣方式處理。
+- 手機驗收（iPhone，11/14）：隔天實際走完今日複習流程，沒有問題。Day 6 驗收通過。
 
 ## Day 7（錯題庫）
 
