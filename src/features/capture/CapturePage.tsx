@@ -162,11 +162,21 @@ export function SaveBar({
 }
 
 /** 中途離開確認（錄入與編輯共用） */
-export function DiscardSheet({ open, onConfirm, onCancel }: { open: boolean; onConfirm: () => void; onCancel: () => void }) {
+export function DiscardSheet({
+  open,
+  title = '要捨棄這題嗎？',
+  onConfirm,
+  onCancel,
+}: {
+  open: boolean
+  title?: string
+  onConfirm: () => void
+  onCancel: () => void
+}) {
   return (
     <ConfirmSheet
       open={open}
-      title="要捨棄這題嗎？"
+      title={title}
       confirmLabel="捨棄"
       cancelLabel="繼續填寫"
       onConfirm={onConfirm}
