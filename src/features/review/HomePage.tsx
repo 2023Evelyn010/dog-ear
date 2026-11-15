@@ -10,6 +10,7 @@ import { getReviewOverview, type ReviewOverview } from '../../db/review'
 import { getBackupStatus } from '../../db/settings'
 import { isStandalone } from '../../lib/standalone'
 import { estimateMinutes } from '../../lib/stats'
+import { useToday } from '../../lib/useToday'
 import { BackupReadySheet } from '../settings/BackupReadySheet'
 import { useBackupExport } from '../settings/useBackupExport'
 import { daysWithoutBackup, pickBanner } from './banner'
@@ -17,7 +18,8 @@ import { noDueText } from './copy'
 
 /** 複習頁（首頁）：docs/PRD.md 3.1、Figma 1-1／1-2／1-3 */
 export function HomePage() {
-  const overview = useLiveQuery(() => getReviewOverview())
+  const day = useToday() // 跨過午夜時重算
+  const overview = useLiveQuery(() => getReviewOverview(), [day])
 
   return (
     <>
@@ -38,10 +40,11 @@ export function HomePage() {
 /** 提示列：加入主畫面優先，其次是備份提醒（docs/PRD.md 3.1） */
 function HomeBannerRow() {
   const navigate = useNavigate()
+  const day = useToday()
   const status = useLiveQuery(() => getBackupStatus())
   const backup = useBackupExport()
   if (!status) return null
-  const banner = pickBanner(isStandalone(), daysWithoutBackup(status.lastBackupAt, status.firstQuestionAt))
+  const banner = pickBanner(isStandalone(), daysWithoutBackup(status.lastBackupAt, status.firstQuestionAt, day))
   if (!banner) return null
   return (
     <div className="px-6 pt-2">

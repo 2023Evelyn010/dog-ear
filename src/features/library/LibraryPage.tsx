@@ -8,7 +8,7 @@ import { PART_BG } from '../../components/partColor'
 import { Photo } from '../../components/Photo'
 import { Sheet } from '../../components/Sheet'
 import { db, type Part, type Question } from '../../db/schema'
-import { today as todayOf } from '../../lib/date'
+import { useToday } from '../../lib/useToday'
 import { EmptyState } from '../review/HomePage'
 import {
   CLEARED_FILTER,
@@ -43,6 +43,7 @@ export function LibraryPage() {
   // 讀整張表（getAll，不開 cursor）；縮圖本來就需要照片
   const questions = useLiveQuery(() => db.questions.toArray())
   const tags = useLiveQuery(() => db.errorTags.toArray())
+  const today = useToday()
   const [filter, setFilter] = useState(savedFilter)
   const [sort, setSort] = useState(savedSort)
   const [sheet, setSheet] = useState<SheetKind>('none')
@@ -62,7 +63,6 @@ export function LibraryPage() {
     )
 
   const names = tagNameMap(tags)
-  const today = todayOf()
   const shown = sortQuestions(filterQuestions(questions, filter), sort)
   const tagOptions = filterTagOptions(tags, questions)
 
