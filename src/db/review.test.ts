@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { addQuestion, type NewQuestionInput } from './questions'
 import { getReviewOverview, loadTodayQueue, recordReview } from './review'
 import { DogEarDB } from './schema'
+import { getBackupStatus } from './settings'
 
 let n = 0
 const opened: DogEarDB[] = []
@@ -121,9 +122,11 @@ describe('iOS Safari 相容', () => {
     try {
       const db = freshDb()
       await getReviewOverview(db, at(10))
+      await getBackupStatus(db)
       const q = await addQuestion(input, db, at(10))
       await recordReview(q.id, 'D', 'sure', db, at(11))
       await getReviewOverview(db, at(11))
+      await getBackupStatus(db)
       expect(opened).toBe(0)
     } finally {
       protos.forEach((p, i) => methods.forEach((m, j) => ((p as unknown as Record<string, unknown>)[m] = originals[i][j])))

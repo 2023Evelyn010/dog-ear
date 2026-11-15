@@ -5,11 +5,15 @@ import { router } from './app/router'
 import { db } from './db/schema'
 import './index.css'
 import { setupAppUpdates } from './lib/pwa'
+import { requestPersistentStorage } from './lib/standalone'
 
 // 首次啟動時建立資料庫（populate：預設錯因與設定）
 db.open().catch((err: unknown) => {
   console.error('無法開啟資料庫', err)
 })
+
+// 從主畫面啟動時申請持久儲存
+void requestPersistentStorage()
 
 // 回到前景時檢查新版；不在錄入、複習中才套用
 void setupAppUpdates(router)

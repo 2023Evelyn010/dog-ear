@@ -5,8 +5,14 @@ import { Button } from '../../components/Button'
 import { Card, StatCard } from '../../components/Card'
 import { TabHeader } from '../../components/Header'
 import { GearIcon } from '../../components/icons'
+import { Banner } from '../../components/Banner'
 import { getReviewOverview, type ReviewOverview } from '../../db/review'
+import { getBackupStatus } from '../../db/settings'
+import { isStandalone } from '../../lib/standalone'
 import { estimateMinutes } from '../../lib/stats'
+import { BackupReadySheet } from '../settings/BackupReadySheet'
+import { useBackupExport } from '../settings/useBackupExport'
+import { daysWithoutBackup, pickBanner } from './banner'
 import { noDueText } from './copy'
 
 /** 複習頁（首頁）：docs/PRD.md 3.1、Figma 1-1／1-2／1-3 */
@@ -23,8 +29,36 @@ export function HomePage() {
           </Link>
         }
       />
+      <HomeBannerRow />
       {overview && (overview.total === 0 ? <EmptyState /> : <Dashboard o={overview} />)}
     </>
+  )
+}
+
+/** 提示列：加入主畫面優先，其次是備份提醒（docs/PRD.md 3.1） */
+function HomeBannerRow() {
+  const navigate = useNavigate()
+  const status = useLiveQuery(() => getBackupStatus())
+  const backup = useBackupExport()
+  if (!status) return null
+  const banner = pickBanner(isStandalone(), daysWithoutBackup(status.lastBackupAt, status.firstQuestionAt))
+  if (!banner) return null
+  return (
+    <div className="px-6 pt-2">
+      {banner.kind === 'install' ? (
+        <Banner onClick={() => navigate('/welcome')}>加入主畫面，避免錯題資料被系統清除 →</Banner>
+      ) : (
+        <Banner onClick={backup.start} disabled={backup.busy}>
+          已經 {banner.days} 天沒有備份，點這裡匯出 →
+        </Banner>
+      )}
+      {backup.error && (
+        <p role="alert" className="mt-2 text-small text-ink">
+          {backup.error}
+        </p>
+      )}
+      <BackupReadySheet backup={backup} />
+    </div>
   )
 }
 

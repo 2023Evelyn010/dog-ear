@@ -75,3 +75,33 @@ export function BackIcon(props: IconProps) {
     </Svg>
   )
 }
+
+/** 拖曳把手 ≡ */
+export function GripIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M5 8h14M5 12h14M5 16h14" />
+    </Svg>
+  )
+}
+
+/** ⋯ 選單 */
+export function MoreIcon(props: IconProps) {
+  return (
+    <Svg {...props} fill="currentColor" stroke="none">
+      <circle cx="5" cy="12" r="1.6" />
+      <circle cx="12" cy="12" r="1.6" />
+      <circle cx="19" cy="12" r="1.6" />
+    </Svg>
+  )
+}
+
+/** iOS 分享：方框加向上箭頭 */
+export function ShareIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M12 3v12M8 7l4-4 4 4" />
+      <path d="M8 10H6v11h12V10h-2" />
+    </Svg>
+  )
+}
